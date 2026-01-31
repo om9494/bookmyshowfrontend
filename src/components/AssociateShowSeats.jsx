@@ -59,7 +59,7 @@ const AssociateShowSeats = () => {
         showId: parseInt(showId),
         ...seatPrices,
       };
-      const res = await fetch("http://localhost:8080/shows/associateShowSeats", {
+      const res = await fetch("https://bookmyshow-backend.onrender.com/theaters", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
