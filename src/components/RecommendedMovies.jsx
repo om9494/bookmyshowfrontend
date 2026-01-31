@@ -50,9 +50,9 @@ const RecommendedMovies = () => {
                 style={{ WebkitOverflowScrolling: 'touch' }}
               >
                 {genreMovies.map((movie) => (
-                  <div key={movie.id} className="min-w-[160px] md:min-w-0">
+                  <div key={movie._id} className="min-w-[160px] md:min-w-0">
                     <MovieCard
-                      id={movie.id}
+                      id={movie._id}
                       title={movie.movieName}
                       poster={movie.imageUrl}
                       genre={movie.genre}

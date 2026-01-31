@@ -140,7 +140,7 @@ const BookTickets = () => {
         // console.log("Theaters data:", theaters); // Log the theaters data
         const formattedCinemas = [];
         for (const theater of theaters) {
-          const showtimesWithShowIds = data[theater.id] || [];
+          const showtimesWithShowIds = data[theater._id] || [];
           const showtimes = [];
           for (const showId in showtimesWithShowIds) {
             const showTime = showtimesWithShowIds[showId];
@@ -148,7 +148,7 @@ const BookTickets = () => {
           }
           if (showtimes.length > 0) {
             formattedCinemas.push({
-              id: theater.id,
+              id: theater._id,
               ...theater,
               showtimes,
               info: "Cancellation available"

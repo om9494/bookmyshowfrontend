@@ -14,7 +14,6 @@ import SearchResults from "./components/SearchResults";
 import TheaterDetails from "./pages/TheaterDetails";
 import AdminMovieList from "./pages/AdminMovieList";
 import AdminDashboard from "./pages/AdminDashboard";
-import Chatbot from "./components/Chatbot";
 import axios from "axios";
 
 export const UserContext = createContext();
@@ -86,7 +85,6 @@ function App() {
     <UserContext.Provider value={[null, null]}>
       <AdminContext.Provider value={[null, null]} >
         <Router>
-          <Chatbot/>
           <Routes>
 
             <Route path="/" element={<Home />} />
