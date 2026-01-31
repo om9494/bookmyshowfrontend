@@ -95,9 +95,9 @@ const AdminShowList = () => {
     try {
       const token = localStorage.getItem("token");
       const [showsRes, moviesRes, theatersRes] = await Promise.all([
-        fetch("http://localhost:8080/shows/getAllShows", { headers: { Authorization: `Bearer ${token}` } }),
-        fetch("http://localhost:8080/movies/all", { headers: { Authorization: `Bearer ${token}` } }),
-        fetch("http://localhost:8080/theaters", { headers: { Authorization: `Bearer ${token}` } })
+        fetch("https://bookmyshow-backend-p05y.onrender.com/shows/getAllShows", { headers: { Authorization: `Bearer ${token}` } }),
+        fetch("https://bookmyshow-backend-p05y.onrender.com/movies/all", { headers: { Authorization: `Bearer ${token}` } }),
+        fetch("https://bookmyshow-backend-p05y.onrender.com/theaters", { headers: { Authorization: `Bearer ${token}` } })
       ]);
       const showsData = await showsRes.json();
       const moviesData = await moviesRes.json();
@@ -146,7 +146,7 @@ const AdminShowList = () => {
         date: editForm.date,
         time: formattedTime
       };
-      const res = await fetch(`http://localhost:8080/shows/updateShow/${editId}`, {
+      const res = await fetch(`https://bookmyshow-backend-p05y.onrender.com/shows/updateShow/${editId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -176,7 +176,7 @@ const AdminShowList = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:8080/shows/deleteShow/${showId}`, {
+      const res = await fetch(`https://bookmyshow-backend-p05y.onrender.com/shows/deleteShow/${showId}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -212,7 +212,7 @@ const AdminShowList = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:8080/shows/associateShowSeats", {
+      const res = await fetch("https://bookmyshow-backend-p05y.onrender.com/shows/associateShowSeats", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -255,7 +255,7 @@ const AdminShowList = () => {
     setError("");
     try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:8080/show-food/show/${show.showId}`, {
+        const res = await axios.get(`https://bookmyshow-backend-p05y.onrender.com/show-food/show/${show.showId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setFoodItems(res.data);
@@ -276,8 +276,8 @@ const AdminShowList = () => {
       setError("");
       const token = localStorage.getItem("token");
       const url = editingFoodId 
-          ? `http://localhost:8080/show-food/update/${editingFoodId}` 
-          : `http://localhost:8080/show-food/add`;
+          ? `https://bookmyshow-backend-p05y.onrender.com/show-food/update/${editingFoodId}` 
+          : `https://bookmyshow-backend-p05y.onrender.com/show-food/add`;
       const method = editingFoodId ? 'put' : 'post';
 
       try {
@@ -306,7 +306,7 @@ const AdminShowList = () => {
       setError("");
       const token = localStorage.getItem("token");
       try {
-          await axios.delete(`http://localhost:8080/show-food/delete/${foodId}`, {
+          await axios.delete(`https://bookmyshow-backend-p05y.onrender.com/show-food/delete/${foodId}`, {
               headers: { Authorization: `Bearer ${token}` }
           });
           setMessage("Food item deleted successfully.");
