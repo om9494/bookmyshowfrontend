@@ -98,7 +98,7 @@ const AdminAddShow = () => {
         date: form.date,
         time: formattedTime
       };
-      const res = await fetch("https://bookmyshow-backend.onrender.com/shows/addShow", {
+      const res = await fetch("https://bookmyshow-backend-p05y.onrender.com/shows/addShow", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
