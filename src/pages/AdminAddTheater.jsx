@@ -52,7 +52,7 @@ const AdminAddTheater = () => {
       return;
     }
     try {
-      const response = await fetch("https://bookmyshow-backend.onrender.com/theaters", {
+      const response = await fetch("https://bookmyshow-backend.onrender.com/api/theaters", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

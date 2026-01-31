@@ -51,7 +51,7 @@ const AdminTheaterSeats = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`https://bookmyshow-backend.onrender.com/theater-seats/theater/${theaterId}`, {
+      const res = await fetch(`https://bookmyshow-backend.onrender.com/api/theater-seats/theater/${theaterId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch rows");
@@ -289,7 +289,7 @@ const AdminTheaterSeats = () => {
               let successCount = 0, failCount = 0;
               for (let rowLabel of rowsArr) {
                 try {
-                  const res = await fetch("https://bookmyshow-backend.onrender.com/theater-seats", {
+                  const res = await fetch("https://bookmyshow-backend.onrender.com/api/theater-seats", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",

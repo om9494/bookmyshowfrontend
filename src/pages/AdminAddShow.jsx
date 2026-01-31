@@ -41,7 +41,7 @@ const AdminAddShow = () => {
           fetch("https://bookmyshow-backend.onrender.com/movies/all", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          fetch("https://bookmyshow-backend.onrender.com//theaters", {
+          fetch("https://bookmyshow-backend.onrender.com/theaters", {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);
