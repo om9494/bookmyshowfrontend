@@ -38,10 +38,10 @@ const AdminAddShow = () => {
       try {
         const token = localStorage.getItem("token");
         const [moviesRes, theatersRes] = await Promise.all([
-          fetch("https://bookmyshow-backend.onrender.com/movies/all", {
+          fetch("https://bookmyshow-backend-p05y.onrender.com/movies/all", {
             headers: { Authorization: `Bearer ${token}` }
           }),
-          fetch("https://bookmyshow-backend.onrender.com/theaters", {
+          fetch("https://bookmyshow-backend-p05y.onrender.com/theaters", {
             headers: { Authorization: `Bearer ${token}` }
           })
         ]);

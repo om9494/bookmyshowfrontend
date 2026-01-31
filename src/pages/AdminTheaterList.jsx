@@ -43,7 +43,7 @@ const AdminTheaterList = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://bookmyshow-backend.onrender.com/theaters", {
+      const res = await fetch("https://bookmyshow-backend-p05y.onrender.com/theaters", {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (!res.ok) throw new Error("Failed to fetch theaters");
@@ -74,7 +74,7 @@ const AdminTheaterList = () => {
     setSuccess("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`https://bookmyshow-backend.onrender.com/theaters/${id}`, {
+      const res = await fetch(`https://bookmyshow-backend-p05y.onrender.com/theaters/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -106,7 +106,7 @@ const AdminTheaterList = () => {
     setSuccess("");
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`https://bookmyshow-backend.onrender.com/theaters/${id}`, {
+      const res = await fetch(`https://bookmyshow-backend-p05y.onrender.com/theaters/${id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
