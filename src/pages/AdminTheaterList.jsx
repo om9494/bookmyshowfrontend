@@ -49,7 +49,6 @@ const AdminTheaterList = () => {
       if (!res.ok) throw new Error("Failed to fetch theaters");
       const data = await res.json();
       setTheaters(data);
-      console.log("Fetched theaters:", data);
       setFiltered(data);
     } catch (err) {
       setError(err.message);
@@ -191,9 +190,9 @@ const AdminTheaterList = () => {
                 {filtered.length === 0 ? (
                   <div className="col-span-full text-center py-6 text-gray-500">No theaters found.</div>
                 ) : filtered.map(theater => (
-                  <div key={theater._id} className="relative rounded-3xl bg-white/90 backdrop-blur-md shadow-2xl p-6 flex flex-col items-center group hover:scale-105 transition-all duration-300 border-t-4 border-purple-400 min-h-[260px] w-full">
-                    {editId === theater._id ? (
-                      <form onSubmit={() => handleUpdate(theater._id)} className="w-full flex flex-col gap-3">
+                  <div key={theater.id} className="relative rounded-3xl bg-white/90 backdrop-blur-md shadow-2xl p-6 flex flex-col items-center group hover:scale-105 transition-all duration-300 border-t-4 border-purple-400 min-h-[260px] w-full">
+                    {editId === theater.id ? (
+                      <form onSubmit={() => handleUpdate(theater.id)} className="w-full flex flex-col gap-3">
                         <input type="text" name="name" value={editForm.name} onChange={handleEditChange} className="border px-3 py-2 rounded-xl w-full bg-white/60" />
                         <input type="text" name="address" value={editForm.address} onChange={handleEditChange} className="border px-3 py-2 rounded-xl w-full bg-white/60" />
                         <input type="text" name="city" value={editForm.city} onChange={handleEditChange} className="border px-3 py-2 rounded-xl w-full bg-white/60" />
@@ -213,8 +212,8 @@ const AdminTheaterList = () => {
                         </div>
                         <div className="flex gap-3 mt-4 w-full justify-center">
                           <button onClick={() => startEdit(theater)} className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1.5 rounded-lg font-semibold shadow text-sm transition-all">Edit</button>
-                          <button onClick={() => handleDelete(theater._id)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg font-semibold shadow text-sm transition-all">Delete</button>
-                          <button onClick={() => navigate(`/admin/theaters/${theater._id}/seats`)} className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1.5 rounded-lg font-semibold shadow text-sm transition-all">Manage Seats</button>
+                          <button onClick={() => handleDelete(theater.id)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg font-semibold shadow text-sm transition-all">Delete</button>
+                          <button onClick={() => navigate(`/admin/theaters/${theater.id}/seats`)} className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1.5 rounded-lg font-semibold shadow text-sm transition-all">Manage Seats</button>
                         </div>
                       </>
                     )}

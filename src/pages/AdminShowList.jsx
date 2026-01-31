@@ -112,15 +112,15 @@ const AdminShowList = () => {
     }
   };
 
-  const getMovie = (id) => movies.find(m => m._id === id) || {};
-  const getTheater = (id) => theaters.find(t => t._id === id) || {};
+  const getMovie = (id) => movies.find(m => m.id === id) || {};
+  const getTheater = (id) => theaters.find(t => t.id === id) || {};
 
   // --- Existing Handlers (No Changes) ---
   const handleEdit = (show) => {
-    setEditId(show._id);
+    setEditId(show.showId);
     setEditForm({
-      movieId: show.movie?._id ? String(show.movie._id) : "",
-      theaterId: show.theatre?._id ? String(show.theatre._id) : "",
+      movieId: show.movie?.id ? String(show.movie.id) : "",
+      theaterId: show.theatre?.id ? String(show.theatre.id) : "",
       date: show.date || "",
       time: show.time ? show.time.slice(0, 5) : ""
     });
@@ -141,8 +141,8 @@ const AdminShowList = () => {
       const token = localStorage.getItem("token");
       const formattedTime = editForm.time ? `${editForm.time}:00` : "";
       const payload = {
-        movieId: editForm.movieId,
-        theaterId: editForm.theaterId,
+        movieId: parseInt(editForm.movieId, 10),
+        theaterId: parseInt(editForm.theaterId, 10),
         date: editForm.date,
         time: formattedTime
       };
@@ -210,7 +210,6 @@ const AdminShowList = () => {
     setSubmitting(true);
     setMessage("");
     setError("");
-    console.log("Submitting seat prices form:", seatPricesForm);
     try {
       const token = localStorage.getItem("token");
       const res = await fetch("http://localhost:8080/shows/associateShowSeats", {
@@ -256,7 +255,7 @@ const AdminShowList = () => {
     setError("");
     try {
         const token = localStorage.getItem("token");
-    const res = await axios.get(`http://localhost:8080/show-food/show/${show._id}`, {
+        const res = await axios.get(`http://localhost:8080/show-food/show/${show.showId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
         setFoodItems(res.data);
@@ -282,10 +281,10 @@ const AdminShowList = () => {
       const method = editingFoodId ? 'put' : 'post';
 
       try {
-      await axios[method](url, 
-        { ...foodForm, showId: currentShowForFood._id, price: parseInt(foodForm.price) },
-        { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
-      );
+          await axios[method](url, 
+              { ...foodForm, showId: currentShowForFood.showId, price: parseInt(foodForm.price) },
+              { headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` } }
+          );
           setMessage(`Food item ${editingFoodId ? 'updated' : 'added'} successfully!`);
           handleAssociateFoodClick(currentShowForFood); // Refresh food list
       } catch (err) {
@@ -296,7 +295,7 @@ const AdminShowList = () => {
   };
 
   const handleEditFood = (food) => {
-      setEditingFoodId(food._id);
+      setEditingFoodId(food.id);
       setFoodForm({ name: food.name, price: food.price });
   };
 
@@ -359,19 +358,19 @@ const AdminShowList = () => {
                 {shows.length === 0 ? (
                   <div className="col-span-full text-center py-6 text-gray-500">No shows found.</div>
                 ) : shows.map(show => {
-                  const movie = show.movie || getMovie(show.movie?._id);
-                  const theater = show.theatre || getTheater(show.theatre?._id);
+                  const movie = show.movie || getMovie(show.movie?.id);
+                  const theater = show.theatre || getTheater(show.theatre?.id);
                   return (
-                    <div key={show._id} className="relative rounded-3xl bg-white/90 backdrop-blur-md shadow-2xl p-6 flex flex-col items-center group hover:scale-105 transition-all duration-300 border-t-4 border-pink-400 min-h-[260px] w-full">
-                      {editId === show._id ? (
+                    <div key={show.showId} className="relative rounded-3xl bg-white/90 backdrop-blur-md shadow-2xl p-6 flex flex-col items-center group hover:scale-105 transition-all duration-300 border-t-4 border-pink-400 min-h-[260px] w-full">
+                      {editId === show.showId ? (
                         <form onSubmit={handleEditSubmit} className="w-full flex flex-col gap-3">
                           <select name="movieId" value={editForm.movieId} onChange={handleEditChange} required className="border px-3 py-2 rounded-xl w-full bg-white/60">
                             <option value="">Select Movie</option>
-                            {movies.map(m => <option key={m._id} value={m._id}>{m.movieName}</option>)}
+                            {movies.map(m => <option key={m.id} value={m.id}>{m.movieName}</option>)}
                           </select>
                           <select name="theaterId" value={editForm.theaterId} onChange={handleEditChange} required className="border px-3 py-2 rounded-xl w-full bg-white/60">
                             <option value="">Select Theater</option>
-                            {theaters.map(t => <option key={t._id} value={t._id}>{t.name}</option>)}
+                            {theaters.map(t => <option key={t.id} value={t.id}>{t.name}</option>)}
                           </select>
                           <input type="date" name="date" value={editForm.date} onChange={handleEditChange} required className="border px-3 py-2 rounded-xl w-full bg-white/60" />
                           <input type="time" name="time" value={editForm.time} onChange={handleEditChange} required className="border px-3 py-2 rounded-xl w-full bg-white/60" />
@@ -392,8 +391,8 @@ const AdminShowList = () => {
                           {/* --- UPDATED BUTTONS SECTION --- */}
                           <div className="flex flex-wrap gap-2 mt-4 w-full justify-center">
                               <button title="Edit" onClick={() => handleEdit(show)} className="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1.2 rounded-xl font-bold shadow-lg border-2 border-yellow-300 hover:scale-110 transition-all">Edit</button>
-                <button title="Delete" onClick={() => handleDelete(show._id)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.2 rounded-xl font-bold shadow-lg border-2 border-red-300 hover:scale-110 transition-all">Delete</button>
-                <button title="Associate Seats" onClick={() => handleAssociateClick(show._id)} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1.2 rounded-xl font-bold shadow-lg border-2 border-green-300 hover:scale-110 transition-all" disabled={submitting}>Seats</button>
+                              <button title="Delete" onClick={() => handleDelete(show.showId)} className="bg-red-500 hover:bg-red-600 text-white px-3 py-1.2 rounded-xl font-bold shadow-lg border-2 border-red-300 hover:scale-110 transition-all">Delete</button>
+                              <button title="Associate Seats" onClick={() => handleAssociateClick(show.showId)} className="bg-green-500 hover:bg-green-600 text-white px-3 py-1.2 rounded-xl font-bold shadow-lg border-2 border-green-300 hover:scale-110 transition-all" disabled={submitting}>Seats</button>
                               <button title="Associate Food" onClick={() => handleAssociateFoodClick(show)} className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1.2 rounded-xl font-bold shadow-lg border-2 border-purple-300 hover:scale-110 transition-all" disabled={submitting}>Food</button>
                           </div>
                         </>
@@ -514,7 +513,7 @@ const AdminShowList = () => {
                             </h4>
                             <div className="max-h-64 overflow-y-auto space-y-3">
                                 {foodItems.length > 0 ? foodItems.map(food => (
-                                    <div key={food._id} className="flex justify-between items-center p-4 bg-white/80 rounded-xl border border-green-200 shadow-sm hover:shadow-md transition-all duration-300">
+                                    <div key={food.id} className="flex justify-between items-center p-4 bg-white/80 rounded-xl border border-green-200 shadow-sm hover:shadow-md transition-all duration-300">
                                         <div className="flex items-center gap-3">
                                             <span className="text-2xl">🍽️</span>
                                             <div>
@@ -530,7 +529,7 @@ const AdminShowList = () => {
                                                 ✏️ Edit
                                             </button>
                                             <button 
-                                                onClick={() => handleDeleteFood(food._id)} 
+                                                onClick={() => handleDeleteFood(food.id)} 
                                                 className="bg-red-500 text-white px-3 py-1.5 rounded-lg font-semibold hover:bg-red-600 transition-all duration-300 transform hover:scale-105"
                                             >
                                                 🗑️ Delete

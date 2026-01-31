@@ -43,8 +43,8 @@ const SeatSelection = () => {
 
     // --- STATE MANAGEMENT ---
     const count = isUpdateMode ? 1 : parseInt(query.get("count"));
-    const theaterId = isUpdateMode ? state.theaterId : query.get("theatre");
-    const showId = isUpdateMode ? state.newShowId : query.get("showId");
+    const theaterId = isUpdateMode ? state.theaterId : parseInt(query.get("theatre"));
+    const showId = isUpdateMode ? state.newShowId : parseInt(query.get("showId"));
     const time = isUpdateMode ? state.time : query.get("time");
 
     const [allShowSeats, setAllShowSeats] = useState([]);
@@ -90,7 +90,7 @@ const SeatSelection = () => {
                     label: row.rowLabel, price: prices[row.seatType] || 0, count: row.seatCount, type: row.seatType
                 }));
                 setSeatRows(formattedSeatRows);
-                setUserId(userResponse.data._id);
+                setUserId(userResponse.data.id);
                 setMovie(movieResponse.data.movieName);
                 setTheatre(theaterResponse.data.name);
                 setAvailableFood(foodResponse.data);
@@ -123,7 +123,7 @@ const SeatSelection = () => {
     
     // In update mode, food cannot be changed, so its price is 0.
     const foodPrice = isUpdateMode ? 0 : Object.entries(selectedFood).reduce((total, [foodId, quantity]) => {
-        const item = availableFood.find(f => f._id === foodId);
+        const item = availableFood.find(f => f.id === parseInt(foodId));
         return total + (item ? item.price * quantity : 0);
     }, 0);
     
@@ -221,7 +221,7 @@ const SeatSelection = () => {
             return;
         }
 
-        const requestedFoodIds = Object.entries(selectedFood).flatMap(([_id, qty]) => Array(qty).fill(_id));
+        const requestedFoodIds = Object.entries(selectedFood).flatMap(([id, qty]) => Array(qty).fill(parseInt(id)));
         const ticketEntryDto = { showId, userId, requestSeats: selectedSeats, requestedFoodIds };
 
         const bookingDetails = {
@@ -295,7 +295,7 @@ const SeatSelection = () => {
             try {
                 setIsProcessing(true);
                 await axios.post(`${import.meta.env.VITE_BACKEND_API}/seats/unlockSeat`, 
-                    { seatId: seatObject._id, userId }, 
+                    { seatId: seatObject.id, userId }, 
                     { headers: { "Authorization": `Bearer ${token}` } }
                 );
                 setSelectedSeats(selectedSeats.filter((s) => s !== seatNo));
@@ -310,7 +310,7 @@ const SeatSelection = () => {
             try {
                 setIsProcessing(true);
                 const response = await axios.post(`${import.meta.env.VITE_BACKEND_API}/seats/lockSeat`, 
-                    { seatId: seatObject._id, userId }, 
+                    { seatId: seatObject.id, userId }, 
                     { headers: { "Authorization": `Bearer ${token}` } }
                 );
                 
@@ -320,7 +320,7 @@ const SeatSelection = () => {
                     
                     setAllShowSeats(prevSeats => 
                         prevSeats.map(seat => 
-                            seat._id === seatObject._id 
+                            seat.id === seatObject.id 
                                 ? { ...seat, lockedByUserId: userId }
                                 : seat
                         )
@@ -333,7 +333,7 @@ const SeatSelection = () => {
                 if (error.response?.status === 409) {
                     setAllShowSeats(prevSeats => 
                         prevSeats.map(seat => 
-                            seat._id === seatObject._id 
+                            seat.id === seatObject.id 
                                 ? { ...seat, lockedByUserId: 'other' }
                                 : seat
                         )
@@ -480,7 +480,7 @@ const SeatSelection = () => {
                                     ) : (
                                         <div className="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
                                             {availableFood.map(food => (
-                                                <div key={food._id} className="bg-gradient-to-r from-gray-50 to-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
+                                                <div key={food.id} className="bg-gradient-to-r from-gray-50 to-white p-4 rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
                                                     <div className="flex justify-between items-center">
                                                         <div className="flex items-center gap-3">
                                                             <span className="text-2xl">{getFoodEmoji(food.name)}</span>
@@ -490,9 +490,9 @@ const SeatSelection = () => {
                                                             </div>
                                                         </div>
                                                         <div className="flex items-center gap-3">
-                                                            <button onClick={() => handleRemoveFood(food._id)} className="w-8 h-8 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-full font-bold transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:scale-110 shadow-lg" disabled={!selectedFood[food._id]}>-</button>
-                                                            <span className="w-10 text-center font-bold text-xl text-gray-800 bg-gray-100 rounded-lg py-1">{selectedFood[food._id] || 0}</span>
-                                                            <button onClick={() => handleAddFood(food._id)} className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full font-bold transition-all duration-300 hover:from-green-500 hover:to-green-600 hover:scale-110 shadow-lg">+</button>
+                                                            <button onClick={() => handleRemoveFood(food.id)} className="w-8 h-8 bg-gradient-to-r from-red-400 to-red-500 text-white rounded-full font-bold transition-all duration-300 hover:from-red-500 hover:to-red-600 hover:scale-110 shadow-lg" disabled={!selectedFood[food.id]}>-</button>
+                                                            <span className="w-10 text-center font-bold text-xl text-gray-800 bg-gray-100 rounded-lg py-1">{selectedFood[food.id] || 0}</span>
+                                                            <button onClick={() => handleAddFood(food.id)} className="w-8 h-8 bg-gradient-to-r from-green-400 to-green-500 text-white rounded-full font-bold transition-all duration-300 hover:from-green-500 hover:to-green-600 hover:scale-110 shadow-lg">+</button>
                                                         </div>
                                                     </div>
                                                 </div>

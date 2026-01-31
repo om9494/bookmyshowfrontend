@@ -93,8 +93,8 @@ const AdminAddShow = () => {
       const token = localStorage.getItem("token");
       const formattedTime = form.time ? `${form.time}:00` : "";
       const payload = {
-        movieId: form.movieId,
-        theaterId: form.theaterId,
+        movieId: parseInt(form.movieId, 10),
+        theaterId: parseInt(form.theaterId, 10),
         date: form.date,
         time: formattedTime
       };
@@ -166,9 +166,9 @@ const AdminAddShow = () => {
                         {movies.length > 0 ? (
                           movies.map(movie => (
                             <div
-                              key={movie._id}
-                              className={`border rounded-xl p-3 flex flex-col items-center gap-2 cursor-pointer transition-all duration-200 ease-in-out shadow-md bg-white/60 hover:shadow-lg ${form.movieId === String(movie._id) ? 'border-pink-500 bg-pink-50 scale-105' : 'border-gray-200'}`}
-                              onClick={() => setForm(f => ({ ...f, movieId: String(movie._id) }))}
+                              key={movie.id}
+                              className={`border rounded-xl p-3 flex flex-col items-center gap-2 cursor-pointer transition-all duration-200 ease-in-out shadow-md bg-white/60 hover:shadow-lg ${form.movieId === String(movie.id) ? 'border-pink-500 bg-pink-50 scale-105' : 'border-gray-200'}`}
+                              onClick={() => setForm(f => ({ ...f, movieId: String(movie.id) }))}
                             >
                               <img src={movie.imageUrl} alt={movie.movieName} className="w-16 h-20 object-cover rounded shadow border-2 border-pink-100" onError={(e) => { e.target.onerror = null; e.target.src = `https://placehold.co/48x64/E0F2F7/000000?text=No+Image`; }} />
                               <div className="font-semibold text-gray-800 text-center text-sm truncate w-full">{movie.movieName}</div>
@@ -186,9 +186,9 @@ const AdminAddShow = () => {
                         {theaters.length > 0 ? (
                           theaters.map(theater => (
                             <div
-                              key={theater._id}
-                              className={`border rounded-xl p-3 flex flex-col gap-1 cursor-pointer transition-all duration-200 ease-in-out shadow-md bg-white/60 hover:shadow-lg ${form.theaterId === String(theater._id) ? 'border-pink-500 bg-pink-50 scale-105' : 'border-gray-200'}`}
-                              onClick={() => setForm(f => ({ ...f, theaterId: String(theater._id) }))}
+                              key={theater.id}
+                              className={`border rounded-xl p-3 flex flex-col gap-1 cursor-pointer transition-all duration-200 ease-in-out shadow-md bg-white/60 hover:shadow-lg ${form.theaterId === String(theater.id) ? 'border-pink-500 bg-pink-50 scale-105' : 'border-gray-200'}`}
+                              onClick={() => setForm(f => ({ ...f, theaterId: String(theater.id) }))}
                             >
                               <div className="font-semibold text-gray-800 text-center text-sm truncate w-full">{theater.name}</div>
                               <div className="text-xs text-gray-500">{theater.address}, {theater.city}</div>

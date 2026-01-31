@@ -51,7 +51,7 @@ const AdminDashboard = () => {
           if (foundMovie) {
             // Fetch total collection for this movie
             try {
-              const collectionRes = await axios.get(`${import.meta.env.VITE_BACKEND_API}/shows/totalCollection/${foundMovie._id}`, { headers: { Authorization: `Bearer ${token}` } });
+              const collectionRes = await axios.get(`${import.meta.env.VITE_BACKEND_API}/shows/totalCollection/${foundMovie.id}`, { headers: { Authorization: `Bearer ${token}` } });
               setMostShowsMovieCollection(collectionRes.data);
             } catch (e) {
               setMostShowsMovieCollection(null);
@@ -164,13 +164,13 @@ const AdminDashboard = () => {
                   <div className="text-lg font-bold text-gray-700 mb-2">Recent Activity</div>
                   <ul className="text-sm text-gray-700 space-y-2">
                     {recentMovies.map(m => (
-                      <li key={m._id} className="flex items-center gap-2"><span className="text-blue-500">🎬</span> Added movie <span className="font-bold">{m.movieName}</span></li>
+                      <li key={m.id} className="flex items-center gap-2"><span className="text-blue-500">🎬</span> Added movie <span className="font-bold">{m.movieName}</span></li>
                     ))}
                     {recentTheaters.map(t => (
-                      <li key={t._id} className="flex items-center gap-2"><span className="text-green-500">🏢</span> Added theater <span className="font-bold">{t.name}</span></li>
+                      <li key={t.id} className="flex items-center gap-2"><span className="text-green-500">🏢</span> Added theater <span className="font-bold">{t.name}</span></li>
                     ))}
                     {recentShows.map(s => (
-                      <li key={s._id} className="flex items-center gap-2"><span className="text-pink-500">🕒</span> Added show <span className="font-bold">{s.date} {s.time}</span></li>
+                      <li key={s.showId} className="flex items-center gap-2"><span className="text-pink-500">🕒</span> Added show <span className="font-bold">{s.date} {s.time}</span></li>
                     ))}
                   </ul>
                 </div>

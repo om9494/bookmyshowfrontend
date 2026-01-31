@@ -31,7 +31,7 @@ const ViewTicketModel = ({ isOpen, onClose, ticket, userdata }) => {
         : '';
         
     const qrticketData = `
-Ticket ID: ${ticket._id}, 
+Ticket ID: ${ticket.ticketId}, 
 Movie: ${ticket.movie.movieName}, 
 Theater: ${ticket.theater.name}, 
 Date: ${new Date(ticket.date).toLocaleDateString()}, 
@@ -59,7 +59,7 @@ User Age: ${userdata?.age} ${foodDetailsForQR} \n\n
                         format: [canvas.width, canvas.height]
                     });
                     pdf.addImage(imgData, 'PNG', 0, 0, pdf.internal.pageSize.getWidth(), pdf.internal.pageSize.getHeight());
-                    pdf.save(`ticket-${ticket._id}.pdf`);
+                    pdf.save(`ticket-${ticket.ticketId}.pdf`);
                 });
         }
         setTimeout(() => setDownloadText("Download Ticket"), 3000);
@@ -80,7 +80,7 @@ User Age: ${userdata?.age} ${foodDetailsForQR} \n\n
             <div className="grid grid-cols-2 gap-4 mb-4 bg-gray-100 p-4 rounded-xl">
                 <div><span className="text-sm font-medium text-gray-500">Name:</span> <span className="text-sm font-semibold text-gray-800">{userdata?.name}</span></div>
                 <div><span className="text-sm font-medium text-gray-500">Seat:</span> <span className="font-bold text-lg text-pink-600">{ticket.seatNo}</span></div>
-                <div><span className="text-sm font-medium text-gray-500">Ticket ID:</span> <span className="text-sm font-semibold text-gray-800">{ticket._id}</span></div>
+                <div><span className="text-sm font-medium text-gray-500">Ticket ID:</span> <span className="text-sm font-semibold text-gray-800">{ticket.ticketId}</span></div>
                 <div><span className="text-sm font-medium text-gray-500">Total Fare:</span> <span className="text-lg font-bold text-green-700">₹{ticket.fare}</span></div>
             </div>
             {ticket.purchasedFoods && ticket.purchasedFoods.length > 0 && (
@@ -88,7 +88,7 @@ User Age: ${userdata?.age} ${foodDetailsForQR} \n\n
                     <h4 className="font-bold text-md text-gray-800 mb-3">Snacks Ordered:</h4>
                     <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                         {ticket.purchasedFoods.map(food => (
-                            <div key={food._id} className="flex items-center gap-2 text-sm">
+                            <div key={food.id} className="flex items-center gap-2 text-sm">
                                 <span className="font-medium text-gray-700">{food.name}</span>
                             </div>
                         ))}
@@ -130,7 +130,7 @@ User Age: ${userdata?.age} ${foodDetailsForQR} \n\n
                         <div className="grid grid-cols-2 gap-4 mb-4 bg-white/80 p-4 rounded-xl shadow-sm relative z-10">
                             <div><span className="text-sm font-medium text-gray-700">Name:</span> <span className="text-sm font-semibold text-gray-800">{userdata?.name}</span></div>
                             <div><span className="text-sm font-medium text-gray-700">Seat:</span> <span className="font-bold text-lg text-pink-600">{ticket.seatNo}</span></div>
-                            <div><span className="text-sm font-medium text-gray-700">Ticket ID:</span> <span className="text-sm font-semibold text-gray-800">{ticket._id}</span></div>
+                            <div><span className="text-sm font-medium text-gray-700">Ticket ID:</span> <span className="text-sm font-semibold text-gray-800">{ticket.ticketId}</span></div>
                             <div><span className="text-sm font-medium text-gray-700">Total Fare:</span> <span className="text-lg font-bold text-green-700">₹{ticket.fare}</span></div>
                         </div>
 
@@ -141,7 +141,7 @@ User Age: ${userdata?.age} ${foodDetailsForQR} \n\n
                                 </h4>
                                 <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                                     {ticket.purchasedFoods.map(food => (
-                                        <div key={food._id} className="flex items-center gap-2 text-sm">
+                                        <div key={food.id} className="flex items-center gap-2 text-sm">
                                             <span>{getFoodEmoji(food.name)}</span>
                                             <span className="font-medium text-gray-700">{food.name}</span>
                                         </div>
@@ -211,7 +211,7 @@ export default function Profile() {
         const fetchBookedTickets = async () => {
             if (!userData) return;
             try {
-                const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/ticket/user/${userData._id}/active`, {
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/ticket/user/${userData.id}/active`, {
                     headers: { 'Authorization': `Bearer ${localStorage.getItem("token")}` },
                 });
                 setBookedTickets(response.data.reverse());
@@ -274,7 +274,7 @@ export default function Profile() {
                             {bookedTickets.length > 0 ? (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                     {bookedTickets.map((ticket) => (
-                                        <div key={ticket._id} className="bg-white p-6 rounded-2xl shadow-xl border-2 border-pink-200 flex flex-col justify-between hover:shadow-2xl transition-all">
+                                        <div key={ticket.ticketId} className="bg-white p-6 rounded-2xl shadow-xl border-2 border-pink-200 flex flex-col justify-between hover:shadow-2xl transition-all">
                                             <div>
                                                 <p className="text-xl font-bold text-red-600">{ticket.movie.movieName}</p>
                                                 <p className="text-base text-gray-600 mt-1">{ticket.theater.name}</p>
@@ -293,7 +293,7 @@ export default function Profile() {
                                                             <h4 className="text-sm font-semibold text-gray-800 mb-2">Snacks Ordered:</h4>
                                                             <div className="flex flex-wrap gap-2">
                                                                 {ticket.purchasedFoods.map(food => (
-                                                                    <span key={food._id} className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium flex items-center gap-1">
+                                                                    <span key={food.id} className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full font-medium flex items-center gap-1">
                                                                         {getFoodEmoji(food.name)} {food.name}
                                                                     </span>
                                                                 ))}

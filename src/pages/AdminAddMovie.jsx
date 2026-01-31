@@ -79,20 +79,7 @@ const AdminAddMovie = () => {
       setMessage("Movie added successfully!");
       setForm(initialState);
     } catch (err) {
-      console.error('Add movie error:', err);
-      // Handle error response properly
-      if (err.response?.data) {
-        // If data is an object with error property, extract it
-        if (typeof err.response.data === 'object' && err.response.data.error) {
-          setError(err.response.data.error);
-        } else if (typeof err.response.data === 'string') {
-          setError(err.response.data);
-        } else {
-          setError('Failed to add movie');
-        }
-      } else {
-        setError(err.message || 'Failed to add movie');
-      }
+      setError(err.response?.data || "Failed to add movie");
     }
   };
 

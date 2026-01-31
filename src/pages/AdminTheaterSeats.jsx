@@ -51,7 +51,6 @@ const AdminTheaterSeats = () => {
     setError("");
     try {
       const token = localStorage.getItem("token");
-      console.log("Fetching rows for theater ID:", theaterId);
       const res = await fetch(`http://localhost:8080/theater-seats/theater/${theaterId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -85,7 +84,7 @@ const AdminTheaterSeats = () => {
           rowLabel: addForm.rowLabel.trim().toUpperCase(),
           seatCount: parseInt(addForm.seatCount, 10),
           seatType: addForm.seatType,
-          theaterId: theaterId
+          theaterId: parseInt(theaterId, 10)
         })
       });
       if (!res.ok) throw new Error("Failed to add row");
@@ -122,7 +121,7 @@ const AdminTheaterSeats = () => {
           rowLabel: editForm.rowLabel.trim().toUpperCase(),
           seatCount: parseInt(editForm.seatCount, 10),
           seatType: editForm.seatType,
-          theaterId: theaterId
+          theaterId: parseInt(theaterId, 10)
         })
       });
       if (!res.ok) throw new Error("Failed to update row");
@@ -300,7 +299,7 @@ const AdminTheaterSeats = () => {
                       rowLabel,
                       seatCount,
                       seatType: bulkSeatType,
-                      theaterId: theaterId
+                      theaterId: parseInt(theaterId, 10)
                     })
                   });
                   if (res.ok) successCount++;

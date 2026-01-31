@@ -37,10 +37,9 @@ const PaymentSummary = () => {
             });
             if (!orderResponse.ok) throw new Error('Failed to create payment order.');
             const orderData = await orderResponse.json();
-            console.log('Order Data:', orderData);
 
             const options = {
-                key: 'rzp_test_RTO7DEtp9ZEBiH', // Your Razorpay Key ID
+                key: 'rzp_test_4DotYCe9Ux9uOT', // Your Razorpay Key ID
                 amount: orderData.amount,
                 currency: 'INR',
                 name: 'BookMyShow Clone',
@@ -78,8 +77,8 @@ const PaymentSummary = () => {
                             });
                             
                             if (verificationResponse.ok) {
-                                const foodDetails = Object.entries(selectedFood).map(([_id, qty]) => {
-                                    const foodItem = availableFood.find(f => f._id === _id)
+                                const foodDetails = Object.entries(selectedFood).map(([id, qty]) => {
+                                    const foodItem = availableFood.find(f => f.id === parseInt(id));
                                     return `${foodItem.name} (x${qty})`;
                                 }).join(', ');
     
@@ -122,8 +121,8 @@ const PaymentSummary = () => {
     const selectedFoodItems = Object.entries(selectedFood);
     // Note: The price calculation here is just for display. The final amount comes from the previous page.
     const seatPrice = selectedSeats.reduce((acc, seat) => acc + (bookingDetails.seatPrices?.[seat] || 250), 0); // A more robust way to calculate if prices were passed
-    const foodPrice = Object.entries(selectedFood).reduce((total, [_id, qty]) => {
-        const food = availableFood.find(f => f._id === _id);
+    const foodPrice = Object.entries(selectedFood).reduce((total, [id, qty]) => {
+        const food = availableFood.find(f => f.id === parseInt(id));
         return total + (food ? food.price * qty : 0);
     }, 0);
 
@@ -186,10 +185,10 @@ const PaymentSummary = () => {
                                             <h2 className="font-bold text-gray-800 text-lg">Snacks & Beverages</h2>
                                         </div>
                                         <div className="space-y-3">
-                                        {selectedFoodItems.map(([_id, qty]) => {
-                                            const food = availableFood.find(f => f._id === _id);
+                                        {selectedFoodItems.map(([id, qty]) => {
+                                            const food = availableFood.find(f => f.id === parseInt(id));
                                             return (
-                                                <div key={_id} className="flex justify-between items-center bg-white/60 p-3 rounded-xl">
+                                                <div key={id} className="flex justify-between items-center bg-white/60 p-3 rounded-xl">
                                                     <div className="flex items-center gap-3">
                                                         <span className="text-lg">🍽️</span>
                                                         <div>

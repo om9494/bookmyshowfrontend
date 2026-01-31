@@ -41,7 +41,7 @@ const ReviewSection = ({ movieId, currentUser }) => {
                 rating: editingReview.rating,
                 comment: editingReview.comment
             });
-            setReviews(reviews.map(r => (r.id === editingReview._id ? response.data : r)));
+            setReviews(reviews.map(r => (r.id === editingReview.id ? response.data : r)));
             setEditingReview(null);
         } catch (error) {
             console.error("Failed to update review", error);
